@@ -12,6 +12,9 @@ import javax.swing.JFrame;
  */
 public class MainFrame {
     public static void main(String[] args) {
+        DBManager dbManager = new DBManager();
+        System.out.println(dbManager.getConnection());
+        dbManager.createLoginUsersTable();
         JFrame frame = new JFrame("AUTPortal");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         LoginPanel panel = new LoginPanel();
@@ -19,6 +22,7 @@ public class MainFrame {
         frame.setSize(600,500);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        
         
     }
 }
