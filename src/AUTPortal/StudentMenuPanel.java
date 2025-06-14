@@ -4,6 +4,9 @@
  */
 package AUTPortal;
 
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
@@ -11,5 +14,9 @@ import javax.swing.JPanel;
  * @author ronak
  */
 public class StudentMenuPanel extends JPanel {
-    
+
+    public StudentMenuPanel(String networkLogin, JFrame parentFrame) {
+        setLayout(new BorderLayout());
+        add(new JLabel("Welcome, Student " + networkLogin), BorderLayout.CENTER);
+    }
 }

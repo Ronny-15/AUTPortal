@@ -12,22 +12,23 @@ import javax.swing.JFrame;
  * @author ronak
  */
 public class MainFrame {
+
     public static void main(String[] args) {
         DBManager dbManager = new DBManager();
         System.out.println(dbManager.getConnection());
-        
+
         Connection conn = dbManager.getConnection();
         DBTableCreator tables = new DBTableCreator(conn);
         tables.createAllTables();
-        
+
         JFrame frame = new JFrame("AUTPortal");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        LoginPanel panel = new LoginPanel();
-        frame.add(panel);
-        frame.setSize(600,500);
+        frame.setSize(600, 500);
         frame.setLocationRelativeTo(null);
+
+        LoginPanel panel = new LoginPanel(conn, frame);
+        frame.setContentPane(panel);
         frame.setVisible(true);
-        
-        
+
     }
 }

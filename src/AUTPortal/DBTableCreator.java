@@ -17,8 +17,8 @@ import java.sql.Statement;
 public class DBTableCreator {
 
     Connection conn;
-    
-    public DBTableCreator(Connection conn){
+
+    public DBTableCreator(Connection conn) {
         this.conn = conn;
     }
 
@@ -37,7 +37,7 @@ public class DBTableCreator {
             ResultSet tables = meta.getTables(null, null, tableName.toUpperCase(), null);
 
             if (tables.next()) {
-                System.out.println("AUTPortalDB:: " + tableName + " table exists. Dropping it.");
+                System.out.println("AUTPortalDB: " + tableName + " table exists. Dropping it.");
                 Statement statement = conn.createStatement();
                 statement.execute("DROP TABLE " + tableName);
             } else {
@@ -81,9 +81,9 @@ public class DBTableCreator {
 
             dropTableIfExists(newTable);
 
-             String sqlCreateTable = "CREATE TABLE " + newTable + "(CourseCode VARCHAR(50), " + "CourseName VARCHAR(50)," + "CoursePoints INT," + "CourseLevel INT)";
+            String sqlCreateTable = "CREATE TABLE " + newTable + "(CourseCode VARCHAR(50), " + "CourseName VARCHAR(50)," + "CoursePoints INT," + "CourseLevel INT)";
 
-            String insertData = "INSERT INTO " + newTable + " VALUES " 
+            String insertData = "INSERT INTO " + newTable + " VALUES "
                     + "('COMP500','Programming Concepts and Techniques',15,5), "
                     + "('COMP501','Computing Technology in Society',15,5), "
                     + "('COMP503','Object Oriented Programming',15,5), "
@@ -128,7 +128,6 @@ public class DBTableCreator {
                     + "('COMP726','Blockchain and Cryptocurrency Technology',15,7), "
                     + "('COMP728','Internet of Things and Applications',15,7), "
                     + "('COMP729','Enterprise Networks',15,7)";
-            
 
             statement.execute(sqlCreateTable);
             statement.execute(insertData);
@@ -146,7 +145,7 @@ public class DBTableCreator {
 
             dropTableIfExists(newTable);
 
-             String sqlCreateTable = "CREATE TABLE " + newTable + "(StuedntID INT, " + "CourseCode VARCHAR(50))";
+            String sqlCreateTable = "CREATE TABLE " + newTable + "(StuedntID INT, " + "CourseCode VARCHAR(50))";
 
             String insertData = "INSERT INTO " + newTable + " VALUES " + "(999,'COMP500')";
 
@@ -166,7 +165,7 @@ public class DBTableCreator {
 
             dropTableIfExists(newTable);
 
-             String sqlCreateTable = "CREATE TABLE " + newTable + "(StudentID INT, " + "CourseCode VARCHAR(50)," + "Grade VARCHAR(50))";
+            String sqlCreateTable = "CREATE TABLE " + newTable + "(StudentID INT, " + "CourseCode VARCHAR(50)," + "Grade VARCHAR(50))";
 
             String insertData = "INSERT INTO " + newTable + " VALUES " + "(999,'COMP500', 'A+')";
 
@@ -186,7 +185,7 @@ public class DBTableCreator {
 
             dropTableIfExists(newTable);
 
-             String sqlCreateTable = "CREATE TABLE " + newTable + "(NetworkLogin VARCHAR(50), " + "StaffID INT PRIMARY KEY, " + " Name VARCHAR(50), " + "Email VARCHAR(50))";
+            String sqlCreateTable = "CREATE TABLE " + newTable + "(NetworkLogin VARCHAR(50), " + "StaffID INT PRIMARY KEY, " + " Name VARCHAR(50), " + "Email VARCHAR(50))";
 
             String insertData = "INSERT INTO " + newTable + " VALUES " + "('admin',999,'John Pork', 'John.pork@aut.ac.nz'),"
                     + "('Staff1',998,'Weihua Li', 'weihua.li@aut.ac.nz'),"

@@ -5,13 +5,16 @@
 package AUTPortal;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import javax.swing.Box;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -23,24 +26,55 @@ import javax.swing.JTextField;
  */
 public class LoginPanel extends JPanel {
 
-    private JPanel panel;
-    private JLabel labelTitle;
-    private JLabel labelNetworkLogin;
-    private JLabel labelPassword;
-    private JTextField textNetworkLogin;
-    private JPasswordField textPassword;
-    private JButton buttonLogin;
+    private final JPanel panel;
+    private final JLabel labelTitle;
+    private final JLabel labelNetworkLogin;
+    private final JLabel labelPassword;
+    private final JTextField textNetworkLogin;
+    private final JPasswordField textPassword;
+    private final JButton buttonLogin;
+    private final JLabel labelStatus;
+    private JFrame panretFrame;
+    Connection conn;
 
-    public LoginPanel() {
+    public LoginPanel(Connection conn, JFrame parentFrame) {
         labelTitle = new JLabel("AUT Portal");
         labelTitle.setFont(new Font("SansSerif", Font.BOLD, 25));
-        labelTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
-
+        labelStatus = new JLabel(" ");
         labelNetworkLogin = new JLabel("NetworkLogin: ");
         labelPassword = new JLabel("Password: ");
         textNetworkLogin = new JTextField("", 25);
         textPassword = new JPasswordField("", 25);
         buttonLogin = new JButton("Login");
+        buttonLogin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String networkLogin = new String(textNetworkLogin.getText().trim());
+                    String password = new String(textPassword.getPassword()).trim();
+                    LoginUsersDB loginUsers = new LoginUsersDB(conn);
+
+                    String role = loginUsers.verifyLogin(networkLogin, password);
+
+                    if (role == null) {
+                        labelStatus.setText("NetworkLogin or Password is incorrect.");
+                    } else if (role.equalsIgnoreCase("Student")) {
+                        parentFrame.setContentPane(new StudentMenuPanel(networkLogin, parentFrame));
+                        parentFrame.revalidate();
+                        parentFrame.repaint();
+                    } else if (role.equalsIgnoreCase("Staff")) {
+                        parentFrame.setContentPane(new StaffMenuPanel(networkLogin, parentFrame));
+                        parentFrame.revalidate();
+                        parentFrame.repaint();
+                    }
+
+                } catch (NumberFormatException ex) {
+
+                } catch (Exception ex) {
+
+                }
+            }
+        });
         textNetworkLogin.setPreferredSize(new Dimension(200, 30));
         textPassword.setPreferredSize(new Dimension(200, 30));
 
@@ -48,19 +82,23 @@ public class LoginPanel extends JPanel {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         JPanel rowTitle = new JPanel();
         rowTitle.add(labelTitle);
-        JPanel rowNetworkLogin = new JPanel(new FlowLayout(FlowLayout.LEFT, 45, 0));
+        JPanel rowNetworkLogin = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         rowNetworkLogin.add(labelNetworkLogin);
         rowNetworkLogin.add(textNetworkLogin);
-        JPanel rowPassword = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 0));
+        JPanel rowPassword = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         rowPassword.add(labelPassword);
         rowPassword.add(textPassword);
-        JPanel rowButton = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, -5));
+        JPanel rowStatus = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
+        rowStatus.add(labelStatus);
+        JPanel rowButton = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
         rowButton.add(buttonLogin);
         panel.add(rowTitle);
         panel.add(rowNetworkLogin);
         panel.add(rowPassword);
-        panel.add(rowButton); 
-        
+        panel.add(rowButton);
+        panel.add(rowStatus);
+
+        setBorder(BorderFactory.createEmptyBorder(60, 100, 60, 100));
         setLayout(new BorderLayout());
         add(panel, BorderLayout.CENTER);
 
