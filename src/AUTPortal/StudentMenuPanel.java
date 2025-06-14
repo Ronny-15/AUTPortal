@@ -55,7 +55,7 @@ public class StudentMenuPanel extends JPanel {
         buttonViewDetails.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                panel.removeAll();
             }
         });
         buttonViewGrades = new JButton("View Grades");
