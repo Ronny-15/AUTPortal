@@ -19,11 +19,11 @@ public class MainFrame {
 
         Connection conn = dbManager.getConnection();
         DBTableCreator tables = new DBTableCreator(conn);
-        tables.createAllTables();
+        //tables.createAllTables();
 
         JFrame frame = new JFrame("AUTPortal");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(600, 500);
+        frame.setSize(500, 400);
         frame.setLocationRelativeTo(null);
 
         LoginPanel panel = new LoginPanel(conn, frame);
