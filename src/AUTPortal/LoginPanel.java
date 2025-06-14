@@ -34,7 +34,7 @@ public class LoginPanel extends JPanel {
     private final JPasswordField textPassword;
     private final JButton buttonLogin;
     private final JLabel labelStatus;
-    private JFrame panretFrame;
+    private JFrame parentFrame;
     Connection conn;
 
     public LoginPanel(Connection conn, JFrame parentFrame) {
@@ -62,11 +62,11 @@ public class LoginPanel extends JPanel {
                     }else if (role == null) {
                         labelStatus.setText("NetworkLogin or Password is incorrect.");
                     } else if (role.equalsIgnoreCase("Student")) {
-                        parentFrame.setContentPane(new StudentMenuPanel(networkLogin, parentFrame));
+                        parentFrame.setContentPane(new StudentMenuPanel(networkLogin, parentFrame, conn));
                         parentFrame.revalidate();
                         parentFrame.repaint();
                     } else if (role.equalsIgnoreCase("Staff")) {
-                        parentFrame.setContentPane(new StaffMenuPanel(networkLogin, parentFrame));
+                        parentFrame.setContentPane(new StaffMenuPanel(networkLogin, parentFrame, conn));
                         parentFrame.revalidate();
                         parentFrame.repaint();
                     }

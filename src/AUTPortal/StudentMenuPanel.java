@@ -4,6 +4,7 @@
  */
 package AUTPortal;
 
+import java.sql.Connection;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
@@ -31,13 +32,25 @@ public class StudentMenuPanel extends JPanel {
     private final JButton buttonViewGrades;
     private final JButton buttonViewCourse;
     private final JButton buttonLogout;
+    private JFrame parentFrame;
+    Connection conn;
 
-    public StudentMenuPanel(String networkLogin, JFrame parentFrame) {
+    public StudentMenuPanel(String networkLogin, JFrame parentFrame, Connection conn) {
+        this.conn = conn;
+        this.parentFrame = parentFrame;
         setLayout(new BorderLayout());
         labelTitle = new JLabel("Student Menu");
         labelTitle.setFont(new Font("SansSerif", Font.BOLD, 25));
         labelUser = new JLabel("Logged in as " + networkLogin);
         buttonLogout = new JButton("Logout");
+        buttonLogout.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                 parentFrame.setContentPane(new LoginPanel(conn, parentFrame));
+                        parentFrame.revalidate();
+                        parentFrame.repaint();
+            }
+        });
         buttonViewDetails = new JButton("Edit/View Details");
         buttonViewDetails.addActionListener(new ActionListener() {
             @Override
@@ -73,8 +86,6 @@ public class StudentMenuPanel extends JPanel {
         JPanel rowLogout = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
         rowLogout.add(buttonLogout);
         rowTopRight.add(rowLogout, BorderLayout.EAST);
-        add(rowTopRight, BorderLayout.NORTH);
-
         JPanel rowlabelUser = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         rowlabelUser.add(labelUser);
         rowTopRight.add(rowlabelUser, BorderLayout.WEST);
