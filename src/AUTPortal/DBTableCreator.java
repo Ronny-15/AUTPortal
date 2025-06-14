@@ -83,8 +83,52 @@ public class DBTableCreator {
 
              String sqlCreateTable = "CREATE TABLE " + newTable + "(CourseCode VARCHAR(50), " + "CourseName VARCHAR(50)," + "CoursePoints INT," + "CourseLevel INT)";
 
-            String insertData = "INSERT INTO " + newTable + " VALUES " + "('COMP500','Programming Concepts and Techniques',15,5)";
-
+            String insertData = "INSERT INTO " + newTable + " VALUES " 
+                    + "('COMP500','Programming Concepts and Techniques',15,5), "
+                    + "('COMP501','Computing Technology in Society',15,5), "
+                    + "('COMP503','Object Oriented Programming',15,5), "
+                    + "('COMP504','Networks and Internet',15,5), "
+                    + "('COMP505','Introduction to Programming',15,5), "
+                    + "('COMP506','Computer Organisation',15,5), "
+                    + "('COMP507','IT Project Management',15,5), "
+                    + "('COMP508','Database System Design',15,5), "
+                    + "('COMP517','Data Analysis',15,5), "
+                    + "('COMP600','IT Project Management',15,6), "
+                    + "('COMP602','Software Development Practice',15,6), "
+                    + "('COMP603','Program Design and Construction',15,6), "
+                    + "('COMP604','Operating Systems',15,6), "
+                    + "('COMP607','Information Security Technologies',15,6), "
+                    + "('COMP609','Network and System Administration',15,6), "
+                    + "('COMP610','Data Structures and Algorithms',15,6), "
+                    + "('COMP611','Algorithm Design and Analysis',15,6), "
+                    + "('COMP612','Computer Graphics Programming',15,6), "
+                    + "('COMP613','Combinatorics and Graph Theory',15,6), "
+                    + "('COMP615','Foundations of Data Science',15,6), "
+                    + "('COMP616','Statistics for Data Science',15,6), "
+                    + "('COMP700','Text and Vision Intelligence',15,7), "
+                    + "('COMP701','Nature Inspired Computing',15,7), "
+                    + "('COMP702','Research and Development Project Part 1',15,7), "
+                    + "('COMP703','Research and Development Project Part 2',15,7), "
+                    + "('COMP705','Special Topic',15,7), "
+                    + "('COMP707','Conjoint Cooperative Education Project',15,7), "
+                    + "('COMP708','Conjoint Cooperative Education Project (Part A)',15,7), "
+                    + "('COMP709','Conjoint Cooperative Education Project (Part B)',15,7), "
+                    + "('COMP710','Game Programming',15,7), "
+                    + "('COMP711','Theory of Computation',15,7), "
+                    + "('COMP712','Programming Languages',15,7), "
+                    + "('COMP713','Distributed and Mobile Systems',15,7), "
+                    + "('COMP714','Advanced Network Technologies',15,7), "
+                    + "('COMP715','Network Security',15,7), "
+                    + "('COMP716','Highly Secure Systems',15,7), "
+                    + "('COMP717','Artificial Intelligence',15,7), "
+                    + "('COMP718','Information Security Management',15,7), "
+                    + "('COMP719','Applied Human Computer Interaction',15,7), "
+                    + "('COMP721','Web Development',15,7), "
+                    + "('COMP723','Data Mining and Knowledge Engineering',15,7), "
+                    + "('COMP726','Blockchain and Cryptocurrency Technology',15,7), "
+                    + "('COMP728','Internet of Things and Applications',15,7), "
+                    + "('COMP729','Enterprise Networks',15,7)";
+            
 
             statement.execute(sqlCreateTable);
             statement.execute(insertData);
