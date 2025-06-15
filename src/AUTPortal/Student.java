@@ -10,17 +10,22 @@ package AUTPortal;
  */
 public class Student {
 
+    private String networkLogin;
     private int studentID;
     private String studentName = "";
     private String studentEmail = "";
 
-    public Student(int studentID, String studentName,  String studentEmail) {
+    public Student(String networkLogin, int studentID, String studentName,  String studentEmail) {
+        this.networkLogin = networkLogin;
         this.studentID = studentID;
         this.studentName = studentName;
         this.studentEmail = studentEmail;
 
     }
 
+    public String getNetworkLogin(){
+        return networkLogin;
+    }
     // get the studentID
     public int getStudentID() {
         return studentID;

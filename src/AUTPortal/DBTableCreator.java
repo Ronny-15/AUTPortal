@@ -171,12 +171,7 @@ public class DBTableCreator {
 
             String sqlCreateTable = "CREATE TABLE " + newTable + "(StudentID INT, " + "CourseCode VARCHAR(50)," + "Grade VARCHAR(50))";
 
-            String insertData = "INSERT INTO " + newTable + " VALUES " + "(22184803,'COMP500', 'A+'),"
-                    + "(22184803,'COMP503', 'B+'),"
-                    + "(22184803,'COMP504', 'C-'),"
-                    + "(101,'COMP610', 'B+'),"
-                    + "(101,'COMP603', 'C+'),"
-                    + "(101,'COMP604', 'A+')";
+            String insertData = "INSERT INTO " + newTable + " VALUES " + "(300,'COMP500', 'A+')";
 
             statement.execute(sqlCreateTable);
             statement.execute(insertData);

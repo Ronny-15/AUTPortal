@@ -80,7 +80,7 @@ public class StudentMenuPanel extends JPanel {
 
     }
 
-    private JPanel mainMenuPanel(String networkLogin) {
+    public JPanel mainMenuPanel(String networkLogin) {
 
         labelTitle = new JLabel("Student Menu");
         labelTitle.setFont(new Font("SansSerif", Font.BOLD, 25));
@@ -127,10 +127,10 @@ public class StudentMenuPanel extends JPanel {
         return panel;
     }
 
-    private JPanel detailsMenuPanel(String networkLogin) {
+    public JPanel detailsMenuPanel(String networkLogin) {
         StudentDB studentDB = new StudentDB(conn);
         Student student = studentDB.getStudentInfo(networkLogin);
-        labelTitle = new JLabel("Student Menu (Details)");
+        labelTitle = new JLabel("Details Menu");
         labelTitle.setFont(new Font("SansSerif", Font.BOLD, 25));
 
         JLabel labelName = new JLabel("Current name: " + student.getStudentName());
@@ -150,6 +150,8 @@ public class StudentMenuPanel extends JPanel {
                         Student updatedStudent = studentDB.getStudentInfo(networkLogin);
                         labelName.setText("Current name: " + updatedStudent.getStudentName());
                         labelStatus.setText("Name updated!");
+                        panelCards.add(gradesMenuPanel(networkLogin),"Grades");
+
 
                     }
                 }
@@ -208,18 +210,18 @@ public class StudentMenuPanel extends JPanel {
         buttonStudentEmail.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(buttonStudentEmail);
         panel.add(Box.createVerticalStrut(10));
-        buttonBack.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(buttonBack);
         labelStatus.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(labelStatus);
         panel.add(Box.createVerticalStrut(10));
         panel.add(Box.createVerticalGlue());
+        buttonBack.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(buttonBack);
 
         return panel;
 
     }
 
-    private JPanel gradesMenuPanel(String networkLogin) {
+    public JPanel gradesMenuPanel(String networkLogin) {
         StudentDB studentDB = new StudentDB(conn);
         Student student = studentDB.getStudentInfo(networkLogin);
         GradeDB gradeDB = new GradeDB(conn);
@@ -228,7 +230,7 @@ public class StudentMenuPanel extends JPanel {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        labelTitle = new JLabel("Student Menu (Grades)");
+        labelTitle = new JLabel("Grades Menu");
         labelTitle.setFont(new Font("SansSerif", Font.BOLD, 25));
         JLabel labalID = new JLabel("Showing grades for: " + student.getStudentName() + ", ID: " + student.getStudentID());
         panel.add(Box.createVerticalGlue());
@@ -246,6 +248,7 @@ public class StudentMenuPanel extends JPanel {
             panel.add(Box.createVerticalStrut(10));
         }
 
+        panel.add(Box.createVerticalGlue());
         JButton buttonBack = new JButton("Go back");
         buttonBack.addActionListener(new ActionListener() {
             @Override
@@ -256,17 +259,15 @@ public class StudentMenuPanel extends JPanel {
 
         buttonBack.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(buttonBack);
-        panel.add(Box.createVerticalGlue());
-
         return panel;
     }
 
-    private JPanel courseMenuPanel(String networkLogin) {
+    public JPanel courseMenuPanel(String networkLogin) {
         CourseDB courseDB = new CourseDB(conn);
         StudentDB studentDB = new StudentDB(conn);
         Student student = studentDB.getStudentInfo(networkLogin);
 
-        labelTitle = new JLabel("Student Menu (Course)");
+        labelTitle = new JLabel("Course Menu");
         labelTitle.setFont(new Font("SansSerif", Font.BOLD, 25));
         JButton buttonViewAllCourses = new JButton("View All Courses");
         buttonViewAllCourses.addActionListener(new ActionListener() {
@@ -303,42 +304,42 @@ public class StudentMenuPanel extends JPanel {
                 JOptionPane.showMessageDialog(null, scrollCourses, "Enrolled Courses", JOptionPane.INFORMATION_MESSAGE);
             }
         });
-        
+
         JButton buttonEnrolCourse = new JButton("Enrol in a Course");
         buttonEnrolCourse.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 List<Course> notEnrolled = courseDB.notEnrolledCourses(student.getStudentID());
-                
+
                 String[] enrolOptions = new String[notEnrolled.size()];
-                for(int i = 0; i < notEnrolled.size(); i++){
+                for (int i = 0; i < notEnrolled.size(); i++) {
                     Course course = notEnrolled.get(i);
                     enrolOptions[i] = course.getCode() + ": " + course.getName();
                 }
-               
+
                 String selectedOption = (String) JOptionPane.showInputDialog(null, "Select a course to enrol in: ", "Enrol in a course", JOptionPane.PLAIN_MESSAGE, null, enrolOptions, null);
-                if(selectedOption != null && !selectedOption.isEmpty()){
+                if (selectedOption != null && !selectedOption.isEmpty()) {
                     String selectedCourseCode = selectedOption.split(":")[0].trim();
                     courseDB.enrollInCourse(student.getStudentID(), selectedCourseCode);
                     JOptionPane.showMessageDialog(null, "Enrolled in course: " + selectedCourseCode);
                 }
             }
         });
-        
+
         JButton buttonDropOut = new JButton("Drop a Course");
         buttonDropOut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 List<Course> enrolled = courseDB.getEnrolledCourses(student.getStudentID());
-                
+
                 String[] dropOptions = new String[enrolled.size()];
-                for(int i = 0; i < enrolled.size(); i++){
+                for (int i = 0; i < enrolled.size(); i++) {
                     Course course = enrolled.get(i);
                     dropOptions[i] = course.getCode() + ": " + course.getName();
                 }
-               
+
                 String selectedOption = (String) JOptionPane.showInputDialog(null, "Select a course to drop: ", "Drop a course", JOptionPane.PLAIN_MESSAGE, null, dropOptions, null);
-                if(selectedOption != null && !selectedOption.isEmpty()){
+                if (selectedOption != null && !selectedOption.isEmpty()) {
                     String selectedCourseCode = selectedOption.split(":")[0].trim();
                     courseDB.dropCourses(student.getStudentID(), selectedCourseCode);
                     JOptionPane.showMessageDialog(null, "Dropped course: " + selectedCourseCode);
@@ -364,7 +365,16 @@ public class StudentMenuPanel extends JPanel {
         panel.add(buttonDropOut);
         panel.add(Box.createVerticalStrut(10));
         panel.add(Box.createVerticalGlue());
+        JButton buttonBack = new JButton("Go back");
+        buttonBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(panelCards, "Menu");
+            }
+        });
 
+        buttonBack.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(buttonBack);
         return panel;
     }
 

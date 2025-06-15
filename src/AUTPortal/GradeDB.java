@@ -16,13 +16,13 @@ import java.util.List;
  * @author ronak
  */
 public class GradeDB {
-    
+
     Connection conn;
 
     public GradeDB(Connection conn) {
         this.conn = conn;
     }
-    
+
     public List<Grade> getStudentGrade(int studentID) {
         List<Grade> grades = new ArrayList<>();
         String sql = "SELECT COURSECODE , GRADE FROM Grades WHERE StudentID = ?";
@@ -31,7 +31,7 @@ public class GradeDB {
             statement.setInt(1, studentID);
 
             ResultSet result = statement.executeQuery();
-            while(result.next()) {
+            while (result.next()) {
                 String courseCode = result.getString("COURSECODE");
                 String grade = result.getString("GRADE");
                 grades.add(new Grade(courseCode, grade));
@@ -40,5 +40,23 @@ public class GradeDB {
 
         }
         return grades;
+    }
+
+    public void changeGrade(int studentID, String courseCode, String grade) {
+        String sql = "INSERT INTO Grades (STUDENTID, COURSECODE, GRADE) VALUES (?,?,?)";
+
+        try (PreparedStatement statement = conn.prepareStatement(sql)) {
+            statement.setInt(1, studentID);
+            statement.setString(2, courseCode);
+            statement.setString(3, grade);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+
+        }
+
+    }
+
+    public void updateGrade(int studentID, String courseCode, String grade) {
+
     }
 }
