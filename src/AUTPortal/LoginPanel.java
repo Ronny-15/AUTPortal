@@ -58,10 +58,10 @@ public class LoginPanel extends JPanel {
                     LoginUsersDB loginUsers = new LoginUsersDB(conn);
 
                     String role = loginUsers.verifyLogin(networkLogin, password);
-                    
-                    if(networkLogin.isEmpty() || password.isEmpty()){
+
+                    if (networkLogin.isEmpty() || password.isEmpty()) {
                         labelStatus.setText("Please enter in both fields.");
-                    }else if (role == null) {
+                    } else if (role == null) {
                         labelStatus.setText("NetworkLogin or Password is incorrect.");
                     } else if (role.equalsIgnoreCase("Student")) {
                         parentFrame.setContentPane(new StudentMenuPanel(networkLogin, parentFrame, conn));
@@ -73,7 +73,7 @@ public class LoginPanel extends JPanel {
                         parentFrame.repaint();
                     }
 
-                }  catch (Exception ex) {
+                } catch (Exception ex) {
                 }
             }
         });

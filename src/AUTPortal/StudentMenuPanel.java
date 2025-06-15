@@ -12,6 +12,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -70,6 +71,7 @@ public class StudentMenuPanel extends JPanel {
 
         panelCards.add(mainMenuPanel(networkLogin), "Menu");
         panelCards.add(detailsMenuPanel(networkLogin), "Details");
+        panelCards.add(gradesMenuPanel(networkLogin), "Grades");
         add(panelCards, BorderLayout.CENTER);
         cardLayout.show(panelCards, "Menu");
 
@@ -86,7 +88,14 @@ public class StudentMenuPanel extends JPanel {
                 cardLayout.show(panelCards, "Details");
             }
         });
+
         buttonViewGrades = new JButton("View Grades");
+        buttonViewGrades.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(panelCards, "Grades");
+            }
+        });
         buttonViewCourse = new JButton("View Course options");
 
         JPanel panel = new JPanel();
@@ -126,18 +135,14 @@ public class StudentMenuPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 String newName = JOptionPane.showInputDialog(null, "Enter new full name:");
 
-                if (!newName.isEmpty()) {
+                if (newName != null && !newName.isEmpty()) {
                     if (student != null) {
-                        studentDB.updateStudentName(student.getStudentID(), newName); 
+                        studentDB.updateStudentName(student.getStudentID(), newName);
                         Student updatedStudent = studentDB.getStudentInfo(networkLogin);
-                        labelName.setText("Current name: "+ updatedStudent.getStudentName());
+                        labelName.setText("Current name: " + updatedStudent.getStudentName());
                         labelStatus.setText("Name updated!");
-                        
+
                     }
-
-                } else {
-                    labelStatus.setText("Name can't be empty!");
-
                 }
 
             }
@@ -154,6 +159,14 @@ public class StudentMenuPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 labelStatus.setText("You don't have permission to Edit Student Email!");
+
+            }
+        });
+        JButton buttonBack = new JButton("Go back");
+        buttonBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(panelCards, "Menu");
 
             }
         });
@@ -185,9 +198,58 @@ public class StudentMenuPanel extends JPanel {
         panel.add(Box.createVerticalStrut(10));
         buttonStudentEmail.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(buttonStudentEmail);
+        panel.add(Box.createVerticalStrut(10));
+        buttonBack.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(buttonBack);
         labelStatus.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(labelStatus);
         panel.add(Box.createVerticalStrut(10));
+        panel.add(Box.createVerticalGlue());
+
+        return panel;
+
+    }
+
+    private JPanel gradesMenuPanel(String networkLogin) {
+        StudentDB studentDB = new StudentDB(conn);
+        Student student = studentDB.getStudentInfo(networkLogin);
+        GradeDB gradeDB = new GradeDB(conn);
+        List<Grade> grades = gradeDB.getStudentGrade(student.getStudentID());
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        
+        labelTitle = new JLabel("Student Menu (Grades)");
+        labelTitle.setFont(new Font("SansSerif", Font.BOLD, 25));
+        JLabel labalID = new JLabel("Showing grades for: " + student.getStudentName() + ", ID: " + student.getStudentID());
+        panel.add(Box.createVerticalGlue());
+        labelTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(labelTitle);
+        panel.add(Box.createVerticalStrut(20));
+        labalID.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(labalID);
+        panel.add(Box.createVerticalStrut(10));
+        
+        for (Grade grade : grades) {
+            JLabel labelGrades = new JLabel(grade.getCourseCode() + " = " + grade.getGrade());
+            labelGrades.setAlignmentX(Component.CENTER_ALIGNMENT);
+            panel.add(labelGrades);
+            panel.add(Box.createVerticalStrut(10));
+        }
+
+        JButton buttonBack = new JButton("Go back");
+        buttonBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(panelCards, "Menu");
+
+            }
+        });
+
+        
+       
+        buttonBack.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(buttonBack);
         panel.add(Box.createVerticalGlue());
 
         return panel;
