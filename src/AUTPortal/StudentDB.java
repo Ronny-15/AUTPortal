@@ -39,4 +39,18 @@ public class StudentDB {
         }
         return null;
     }
+    
+    public void updateStudentName(int studentID, String newName){
+        String sql = "UPDATE STUDENTS SET NAME = ? WHERE STUDENTID = ?";
+         
+        try (PreparedStatement statement = conn.prepareStatement(sql)) {
+            statement.setString(1, newName);
+            statement.setInt(2, studentID);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+
+        }
+       ;
+        
+    }
 }

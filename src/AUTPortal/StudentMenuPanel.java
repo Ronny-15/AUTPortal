@@ -18,6 +18,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -123,6 +124,21 @@ public class StudentMenuPanel extends JPanel {
         buttonEditName.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String newName = JOptionPane.showInputDialog(null, "Enter new full name:");
+
+                if (!newName.isEmpty()) {
+                    if (student != null) {
+                        studentDB.updateStudentName(student.getStudentID(), newName); 
+                        Student updatedStudent = studentDB.getStudentInfo(networkLogin);
+                        labelName.setText("Current name: "+ updatedStudent.getStudentName());
+                        labelStatus.setText("Name updated!");
+                        
+                    }
+
+                } else {
+                    labelStatus.setText("Name can't be empty!");
+
+                }
 
             }
         });
