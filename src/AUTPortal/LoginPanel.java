@@ -38,6 +38,8 @@ public class LoginPanel extends JPanel {
     Connection conn;
 
     public LoginPanel(Connection conn, JFrame parentFrame) {
+        this.conn = conn;
+        this.parentFrame = parentFrame;
         setLayout(new BorderLayout());
         labelTitle = new JLabel("AUT Portal");
         labelTitle.setFont(new Font("SansSerif", Font.BOLD, 25));
