@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -21,6 +22,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 /**
  *
@@ -72,6 +74,7 @@ public class StudentMenuPanel extends JPanel {
         panelCards.add(mainMenuPanel(networkLogin), "Menu");
         panelCards.add(detailsMenuPanel(networkLogin), "Details");
         panelCards.add(gradesMenuPanel(networkLogin), "Grades");
+        panelCards.add(courseMenuPanel(networkLogin), "Courses");
         add(panelCards, BorderLayout.CENTER);
         cardLayout.show(panelCards, "Menu");
 
@@ -97,6 +100,12 @@ public class StudentMenuPanel extends JPanel {
             }
         });
         buttonViewCourse = new JButton("View Course options");
+        buttonViewCourse.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(panelCards, "Courses");
+            }
+        });
 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -218,7 +227,7 @@ public class StudentMenuPanel extends JPanel {
 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        
+
         labelTitle = new JLabel("Student Menu (Grades)");
         labelTitle.setFont(new Font("SansSerif", Font.BOLD, 25));
         JLabel labalID = new JLabel("Showing grades for: " + student.getStudentName() + ", ID: " + student.getStudentID());
@@ -229,7 +238,7 @@ public class StudentMenuPanel extends JPanel {
         labalID.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(labalID);
         panel.add(Box.createVerticalStrut(10));
-        
+
         for (Grade grade : grades) {
             JLabel labelGrades = new JLabel(grade.getCourseCode() + " = " + grade.getGrade());
             labelGrades.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -242,17 +251,121 @@ public class StudentMenuPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(panelCards, "Menu");
-
             }
         });
 
-        
-       
         buttonBack.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(buttonBack);
         panel.add(Box.createVerticalGlue());
 
         return panel;
-
     }
+
+    private JPanel courseMenuPanel(String networkLogin) {
+        CourseDB courseDB = new CourseDB(conn);
+        StudentDB studentDB = new StudentDB(conn);
+        Student student = studentDB.getStudentInfo(networkLogin);
+
+        labelTitle = new JLabel("Student Menu (Course)");
+        labelTitle.setFont(new Font("SansSerif", Font.BOLD, 25));
+        JButton buttonViewAllCourses = new JButton("View All Courses");
+        buttonViewAllCourses.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                List<Course> courses = courseDB.getAllCourses();
+                JPanel courseListPanel = new JPanel();
+                courseListPanel.setLayout(new BoxLayout(courseListPanel, BoxLayout.Y_AXIS));
+
+                for (Course course : courses) {
+                    JLabel labelAllCourse = new JLabel(course.getCode() + ": " + course.getName() + ", Points: " + course.getPoints() + ", Level: " + course.getLevel());
+                    courseListPanel.add(labelAllCourse);
+                }
+                JScrollPane scrollCourses = new JScrollPane(courseListPanel);
+                scrollCourses.setPreferredSize(new Dimension(400, 200));
+                JOptionPane.showMessageDialog(null, scrollCourses, "All Courses", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+
+        JButton buttonViewEnrolled = new JButton("View Enrolled Courses");
+        buttonViewEnrolled.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                List<Course> enrolled = courseDB.getEnrolledCourses(student.getStudentID());
+                JPanel courseListPanel = new JPanel();
+                courseListPanel.setLayout(new BoxLayout(courseListPanel, BoxLayout.Y_AXIS));
+
+                for (Course course : enrolled) {
+                    JLabel labelEnrolledCourse = new JLabel(course.getCode() + ": " + course.getName() + ", Points: " + course.getPoints() + ", Level: " + course.getLevel());
+                    courseListPanel.add(labelEnrolledCourse);
+                }
+                JScrollPane scrollCourses = new JScrollPane(courseListPanel);
+                scrollCourses.setPreferredSize(new Dimension(400, 200));
+                JOptionPane.showMessageDialog(null, scrollCourses, "Enrolled Courses", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+        
+        JButton buttonEnrolCourse = new JButton("Enrol in a Course");
+        buttonEnrolCourse.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                List<Course> notEnrolled = courseDB.notEnrolledCourses(student.getStudentID());
+                
+                String[] enrolOptions = new String[notEnrolled.size()];
+                for(int i = 0; i < notEnrolled.size(); i++){
+                    Course course = notEnrolled.get(i);
+                    enrolOptions[i] = course.getCode() + ": " + course.getName();
+                }
+               
+                String selectedOption = (String) JOptionPane.showInputDialog(null, "Select a course to enrol in: ", "Enrol in a course", JOptionPane.PLAIN_MESSAGE, null, enrolOptions, null);
+                if(selectedOption != null && !selectedOption.isEmpty()){
+                    String selectedCourseCode = selectedOption.split(":")[0].trim();
+                    courseDB.enrollInCourse(student.getStudentID(), selectedCourseCode);
+                    JOptionPane.showMessageDialog(null, "Enrolled in course: " + selectedCourseCode);
+                }
+            }
+        });
+        
+        JButton buttonDropOut = new JButton("Drop a Course");
+        buttonDropOut.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                List<Course> enrolled = courseDB.getEnrolledCourses(student.getStudentID());
+                
+                String[] dropOptions = new String[enrolled.size()];
+                for(int i = 0; i < enrolled.size(); i++){
+                    Course course = enrolled.get(i);
+                    dropOptions[i] = course.getCode() + ": " + course.getName();
+                }
+               
+                String selectedOption = (String) JOptionPane.showInputDialog(null, "Select a course to drop: ", "Drop a course", JOptionPane.PLAIN_MESSAGE, null, dropOptions, null);
+                if(selectedOption != null && !selectedOption.isEmpty()){
+                    String selectedCourseCode = selectedOption.split(":")[0].trim();
+                    courseDB.dropCourses(student.getStudentID(), selectedCourseCode);
+                    JOptionPane.showMessageDialog(null, "Dropped course: " + selectedCourseCode);
+                }
+            }
+        });
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.add(Box.createVerticalGlue());
+        labelTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(labelTitle);
+        panel.add(Box.createVerticalStrut(20));
+        buttonViewEnrolled.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(buttonViewEnrolled);
+        panel.add(Box.createVerticalStrut(10));
+        buttonViewAllCourses.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(buttonViewAllCourses);
+        panel.add(Box.createVerticalStrut(10));
+        buttonEnrolCourse.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(buttonEnrolCourse);
+        panel.add(Box.createVerticalStrut(10));
+        buttonDropOut.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(buttonDropOut);
+        panel.add(Box.createVerticalStrut(10));
+        panel.add(Box.createVerticalGlue());
+
+        return panel;
+    }
+
 }
