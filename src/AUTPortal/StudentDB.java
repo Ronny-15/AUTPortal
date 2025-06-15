@@ -35,7 +35,7 @@ public class StudentDB {
                 return new Student(networkLogin, studentID, studentName, studentEmail);
             }
         } catch (SQLException e) {
-
+            System.out.println(e.getMessage());
         }
         return null;
     }
@@ -48,14 +48,14 @@ public class StudentDB {
             statement.setInt(2, studentID);
             statement.executeUpdate();
         } catch (SQLException e) {
-
+            System.out.println(e.getMessage());
         }
-        
+
     }
 
     public Student getStudentInfoID(int studentID) {
         String sql = "SELECT * FROM Students WHERE StudentID = ?";
-        
+
         try (PreparedStatement statement = conn.prepareStatement(sql)) {
             statement.setInt(1, studentID);
 
@@ -67,7 +67,7 @@ public class StudentDB {
                 return new Student(NetworkLogin, studentID, studentName, studentEmail);
             }
         } catch (SQLException e) {
-
+            System.out.println(e.getMessage());
         }
         return null;
     }

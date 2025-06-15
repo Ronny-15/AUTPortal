@@ -38,7 +38,7 @@ public class CourseDB {
                 courses.add(new Course(courseCode, courseName, coursePoints, courseLevel));
             }
         } catch (SQLException e) {
-
+            System.out.println(e.getMessage());
         }
         return courses;
     }
@@ -59,7 +59,7 @@ public class CourseDB {
                 enrolled.add(new Course(courseCode, courseName, coursePoints, courseLevel));
             }
         } catch (SQLException e) {
-
+            System.out.println(e.getMessage());
         }
         return enrolled;
     }
@@ -72,7 +72,7 @@ public class CourseDB {
             statement.setString(2, courseCode);
             statement.executeUpdate();
         } catch (SQLException e) {
-
+            System.out.println(e.getMessage());
         }
 
     }
@@ -93,7 +93,7 @@ public class CourseDB {
                 notEnrolled.add(new Course(courseCode, courseName, coursePoints, courseLevel));
             }
         } catch (SQLException e) {
-
+            System.out.println(e.getMessage());
         }
         return notEnrolled;
     }
@@ -106,7 +106,7 @@ public class CourseDB {
             statement.setString(2, courseCode);
             statement.executeUpdate();
         } catch (SQLException e) {
-
+            System.out.println(e.getMessage());
         }
     }
 }

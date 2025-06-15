@@ -203,7 +203,6 @@ public class StaffMenuPanel extends JPanel {
                         Student updatedStudent = studentDB.getStudentInfo(networkLogin);
                         labelName.setText("Current name: " + updatedStudent.getStudentName());
                         labelStatus.setText("Name updated!");
-                        //panelCards.add(gradesMenuPanel(networkLogin), "Grades");
 
                     }
                 }
@@ -430,32 +429,30 @@ public class StaffMenuPanel extends JPanel {
                 StudentDB studentDB = new StudentDB(conn);
                 GradeDB gradeDB = new GradeDB(conn);
                 Student student = studentDB.getStudentInfo(networkLogin);
-                
+
                 List<Course> enrolled = courseDB.getEnrolledCourses(student.getStudentID());
-                
+
                 String[] courseOptions = new String[enrolled.size()];
-                for(int i = 0; i < enrolled.size(); i++){
+                for (int i = 0; i < enrolled.size(); i++) {
                     courseOptions[i] = enrolled.get(i).getCode() + ": " + enrolled.get(i).getName();
                 }
-               
-                String selectedCourse = (String) JOptionPane.showInputDialog(null,"Select a Course to assgin a grade", "Assign Grade",JOptionPane.PLAIN_MESSAGE,null,courseOptions,null);
-                
-                if(selectedCourse != null && !selectedCourse.isEmpty()){
-                    
-                     String[] gradeOptions = {"A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D", "F"};
-                     String selectedGrade = (String) JOptionPane.showInputDialog(null,"Select a grade for:\n"+selectedCourse, "Assign Grade",JOptionPane.PLAIN_MESSAGE,null,gradeOptions,null);
-                     if(selectedGrade != null && !selectedGrade.isEmpty()){
-                         String courseCode = selectedCourse.split(":")[0].trim();
-                         gradeDB.changeGrade(student.getStudentID(), courseCode, selectedGrade);
-                        
-                         JOptionPane.showMessageDialog(null, "Grade: "+ selectedGrade + "  assigned to " + courseCode);
-                     }
+
+                String selectedCourse = (String) JOptionPane.showInputDialog(null, "Select a Course to assgin a grade", "Assign Grade", JOptionPane.PLAIN_MESSAGE, null, courseOptions, null);
+
+                if (selectedCourse != null && !selectedCourse.isEmpty()) {
+
+                    String[] gradeOptions = {"A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D", "F"};
+                    String selectedGrade = (String) JOptionPane.showInputDialog(null, "Select a grade for:\n" + selectedCourse, "Assign Grade", JOptionPane.PLAIN_MESSAGE, null, gradeOptions, null);
+                    if (selectedGrade != null && !selectedGrade.isEmpty()) {
+                        String courseCode = selectedCourse.split(":")[0].trim();
+                        gradeDB.changeGrade(student.getStudentID(), courseCode, selectedGrade);
+
+                        JOptionPane.showMessageDialog(null, "Grade: " + selectedGrade + "  assigned to " + courseCode);
+                    }
                 }
-                
+
             }
         });
-        
-        
 
         panel.add(Box.createVerticalGlue());
         labelTitle.setAlignmentX(Component.CENTER_ALIGNMENT);

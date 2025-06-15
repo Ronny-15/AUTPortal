@@ -37,6 +37,7 @@ public class GradeDB {
                 grades.add(new Grade(courseCode, grade));
             }
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
 
         }
         return grades;
@@ -51,12 +52,8 @@ public class GradeDB {
             statement.setString(3, grade);
             statement.executeUpdate();
         } catch (SQLException e) {
-
+            System.out.println(e.getMessage());
         }
-
-    }
-
-    public void updateGrade(int studentID, String courseCode, String grade) {
 
     }
 }

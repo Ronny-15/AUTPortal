@@ -148,10 +148,10 @@ public class DBTableCreator {
             String sqlCreateTable = "CREATE TABLE " + newTable + "(StudentID INT, " + "CourseCode VARCHAR(50))";
 
             String insertData = "INSERT INTO " + newTable + " VALUES " + "(999,'COMP500'),"
-                    +"(22184803,'COMP603'),"
-                    +"(22184803,'COMP610'),"
-                    +"(22184803,'COMP609'),"
-                    +"(22184803,'COMP611')";
+                    + "(22184803,'COMP603'),"
+                    + "(22184803,'COMP610'),"
+                    + "(22184803,'COMP609'),"
+                    + "(22184803,'COMP611')";
 
             statement.execute(sqlCreateTable);
             statement.execute(insertData);

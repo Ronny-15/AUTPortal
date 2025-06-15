@@ -150,9 +150,7 @@ public class StudentMenuPanel extends JPanel {
                         Student updatedStudent = studentDB.getStudentInfo(networkLogin);
                         labelName.setText("Current name: " + updatedStudent.getStudentName());
                         labelStatus.setText("Name updated!");
-                        panelCards.add(gradesMenuPanel(networkLogin),"Grades");
-
-
+                        panelCards.add(gradesMenuPanel(networkLogin), "Grades");
                     }
                 }
 

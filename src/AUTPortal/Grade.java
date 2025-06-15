@@ -9,10 +9,11 @@ package AUTPortal;
  * @author ronak
  */
 public class Grade {
+
     private String courseCode;
     private String grade;
-    
-    public Grade(String courseCode, String grade){
+
+    public Grade(String courseCode, String grade) {
         this.courseCode = courseCode;
         this.grade = grade;
     }
@@ -24,13 +25,11 @@ public class Grade {
         return courseCode;
     }
 
-
     /**
      * @return the grade
      */
     public String getGrade() {
         return grade;
     }
-    
-    
+
 }

@@ -74,6 +74,7 @@ public class LoginPanel extends JPanel {
                     }
 
                 } catch (Exception ex) {
+                    System.out.println(ex.getMessage());
                 }
             }
         });

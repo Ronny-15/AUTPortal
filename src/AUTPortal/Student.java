@@ -15,7 +15,7 @@ public class Student {
     private String studentName = "";
     private String studentEmail = "";
 
-    public Student(String networkLogin, int studentID, String studentName,  String studentEmail) {
+    public Student(String networkLogin, int studentID, String studentName, String studentEmail) {
         this.networkLogin = networkLogin;
         this.studentID = studentID;
         this.studentName = studentName;
@@ -23,9 +23,10 @@ public class Student {
 
     }
 
-    public String getNetworkLogin(){
+    public String getNetworkLogin() {
         return networkLogin;
     }
+
     // get the studentID
     public int getStudentID() {
         return studentID;
